@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mystery Atlas</title>
+<meta name="theme-color" content="#0a0a14">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="loading" role="status" aria-live="polite">
+  <div class="ld-box">
+    <div class="ld-title">Mystery Atlas</div>
+    <div class="ld-lens" aria-hidden="true"></div>
+    <div class="ld-bar"><i id="ldFill"></i></div>
+    <div id="ldMsg">Loading…</div>
+    <div id="ldTip" class="small"></div>
+    <div id="ldErr" class="hidden">
+      <div id="ldErrTitle"></div>
+      <p id="ldErrText"></p>
+      <button id="ldRetry" class="primary">Try again</button>
+    </div>
+  </div>
+</div>
+<script src="loader.js"></script>
+<div id="net" role="alert"><span id="netText"></span><button id="netRetry" class="hidden">Retry now</button></div>
+<div id="stage"></div>
+<h1 id="title">Mystery Atlas</h1>
+<button id="mute" title="Sound on/off" aria-label="Sound on/off" aria-pressed="true">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path class="body" d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4z"/><path class="waves" d="M15.5 9.2a4 4 0 0 1 0 5.6M18.3 6.6a8 8 0 0 1 0 10.8"/><path class="slash" d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></svg>
+</button>
+
+<!-- HOME -->
+<section id="home" class="screen">
+  <div class="card">
+    <div id="inviteBanner" class="invite hidden"></div>
+    <label>Your name</label>
+    <input id="name" maxlength="16" placeholder="Detective name" autocomplete="off">
+
+    <div class="row">
+      <div class="col">
+        <h3>Create a server</h3>
+        <input id="roomName" maxlength="28" placeholder="Server name (optional)" autocomplete="off">
+        <label class="check"><input type="checkbox" id="isPrivate"> Private (invite link only)</label>
+        <button id="createBtn" class="primary">Create</button>
+      </div>
+      <div class="col">
+        <h3>Join with a code</h3>
+        <input id="joinCode" maxlength="8" placeholder="Invite code" autocomplete="off">
+        <button id="joinBtn">Join</button>
+      </div>
+    </div>
+
+    <h3>Public servers</h3>
+    <div id="roomList" class="list"><em>No public servers yet. Create one!</em></div>
+    <button id="createMysteryBtn" class="wide">Create a mystery</button>
+    <div class="small">Write your own case. Others will play it in their rounds.</div>
+    <div id="homeError" class="error"></div>
+  </div>
+</section>
+
+<!-- LOBBY -->
+<section id="lobby" class="screen hidden">
+  <div class="card">
+    <h2 id="lobbyName"></h2>
+    <div class="small" id="lobbyKind"></div>
+    <label>Invite link</label>
+    <div class="row tight">
+      <input id="inviteLink" readonly>
+      <button id="copyBtn">Copy</button>
+    </div>
+    <h3>Detectives <span id="lobbyCount"></span></h3>
+    <ul id="lobbyPlayers" class="players"></ul>
+    <div class="row tight">
+      <button id="startBtn" class="primary hidden">Start mystery</button>
+      <button id="leaveBtn">Leave</button>
+    </div>
+    <div id="waitMsg" class="small hidden">Waiting for the host to start the mystery&hellip;</div>
+  </div>
+</section>
+
+<!-- HUD -->
+<div id="hud" class="hidden">
+  <div id="timer">10:00</div>
+  <div id="case" class="panel">
+    <div id="caseLoc"></div>
+    <div id="caseIntro" class="small"></div>
+    <div id="caseTitle"></div>
+    <div id="caseWx" class="small"></div>
+  </div>
+  <div id="board" class="panel">
+    <h3>Evidence board</h3>
+    <ul id="evidence"></ul>
+  </div>
+  <div id="votes" class="panel">
+    <div id="voteQ"></div>
+    <div id="voteOpts"></div>
+    <div id="voteStatus" class="small"></div>
+  </div>
+  <div id="talk" class="panel hidden">
+    <div id="talkHead"></div>
+    <div id="talkBtns"></div>
+    <div id="talkText" class="small"></div>
+    <button id="talkClose">Close (Esc)</button>
+  </div>
+  <div id="prompt" class="hidden">Press <b>E</b> to search</div>
+  <div id="help" class="small">WASD / Arrows move &middot; Drag mouse to look &middot; E search</div>
+</div>
+
+<!-- END -->
+<section id="end" class="screen hidden">
+  <div class="card">
+    <h2 id="endTitle"></h2>
+    <p id="endAnswer"></p>
+    <p id="endExplain" class="small"></p>
+    <div id="endCredit" class="small hidden"></div>
+    <div id="endRate" class="row tight hidden" style="justify-content:center"><button id="likeBtn">Like this mystery</button><button id="reportBtn">Report</button></div>
+    <ul id="endClues" class="small"></ul>
+    <button id="backBtn" class="primary hidden">Back to lobby</button>
+    <div id="endWait" class="small hidden">Waiting for the host&hellip;</div>
+  </div>
+</section>
+
+<div id="docView" class="hidden">
+  <div id="docBox">
+    <div id="docTitle"></div>
+    <div id="docCanvas"></div>
+    <button id="docClose" class="primary">Close (Esc)</button>
+  </div>
+</div>
+
+<div id="social" class="hidden">
+  <div id="voiceBar">
+    <button id="voiceJoin" title="Talk to the other detectives with your microphone">Join voice</button>
+    <button id="voiceMute" class="icon" disabled aria-label="Mute microphone" title="Mute microphone (V)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect class="body" x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/><path class="slash" d="M4 4l16 16"/></svg>
+    </button>
+    <button id="voiceNear" title="Only hear players who are close to you" disabled>Nearby only: off</button>
+    <button id="chatMin" class="mini" aria-label="Hide chat" title="Hide chat" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6.5 9.5 12 15 17.5 9.5"/></svg></button><span id="chatDot" class="hidden"></span>
+  </div>
+  <div id="voiceStatus" class="small"></div>
+  <div id="voiceWho" class="hidden"></div>
+  <div id="chatLog" aria-live="polite"></div>
+  <div id="chatRow"><input id="chatInput" maxlength="200" placeholder="Press Enter to chat" autocomplete="off"><button id="chatSend">Send</button></div>
+</div>
+<div id="toast"></div>
+
+<script src="maps.js"></script>
+<script src="custom.js"></script>
+<script src="npc.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="game.js"></script>
+</body>
+</html>

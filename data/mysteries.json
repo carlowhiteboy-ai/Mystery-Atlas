@@ -1,0 +1,27 @@
+{
+  "locations": [
+    {
+      "id": "blackwood-manor",
+      "name": "Blackwood Manor",
+      "intro": "A storm-dark estate on the moor. At nine o'clock tonight the Blackwood sapphire vanished from a locked study.",
+      "mysteries": [
+        {
+          "id": "bm-001",
+          "title": "The Vanished Sapphire",
+          "question": "Who stole the Blackwood sapphire?",
+          "options": ["Alfred Crane, the butler", "Edmund Pike, the gardener", "Clara Blackwood, the niece", "Dr. Harlow, the family physician"],
+          "answer": 3,
+          "explanation": "The front door was locked from inside, so the thief used the cellar hatch. The butler (candle receipt, 8:47pm), the gardener (witnessed in the greenhouse) and the niece (at choir until ten) all have alibis. The surgical glove scrap and the torn prescription page pointing to a pawnbroker both lead to Dr. Harlow.",
+          "clues": [
+            { "id": "c1", "label": "Front porch", "x": 0, "z": -11.2, "text": "The front door was bolted from the inside all evening. Nobody came or went this way." },
+            { "id": "c2", "label": "Cellar hatch", "x": -11, "z": -16.5, "text": "The cellar hatch latch is freshly oiled. Caught on it: a scrap of pale surgical glove." },
+            { "id": "c3", "label": "Greenhouse", "x": -24.5, "z": 10, "text": "A logbook shows Edmund repotting orchids from eight until eleven, signed by the night watchman." },
+            { "id": "c4", "label": "Garden shed", "x": 23.5, "z": 8, "text": "A crumpled receipt: Alfred bought candles in the village at 8:47pm, stamped by the shopkeeper." },
+            { "id": "c5", "label": "Old well", "x": 0, "z": 18.3, "text": "A choir programme with Clara's name circled. She sang in the village hall until ten." },
+            { "id": "c6", "label": "Ancient oak", "x": 14, "z": 31.5, "text": "A torn prescription page in Dr. Harlow's handwriting, with a pawnbroker's address scribbled on the back." }
+          ]
+        }
+      ]
+    }
+  ]
+}

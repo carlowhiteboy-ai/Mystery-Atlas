@@ -1,0 +1,17 @@
+{
+  "name": "mystery-atlas",
+  "version": "0.5.0",
+  "description": "3D multiplayer browser mystery game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build:solo": "node build-solo.js",
+    "test": "node test/check-maps.js && node test/check-generator.js && node test/check-custom.js && node test/check-npc.js && node test/check-server.js && node test/check-social.js && node test/check-npc-solid.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "three": "^0.160.0"
+  }
+}

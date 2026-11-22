@@ -1,0 +1,5 @@
+node_modules/
+data/seen.json
+data/recent.json
+data/custom.json
+*.tmp

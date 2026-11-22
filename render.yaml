@@ -1,0 +1,12 @@
+# Render Blueprint: New + > Blueprint, point it at your GitHub repo.
+services:
+  - type: web
+    name: mystery-atlas
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20
